@@ -1,5 +1,12 @@
 
 export const BUSSINESSENDPOINT = {
-    WAITLIST: '/api/v1/waitlist',
-    ONBOARDING: '/api/v1/onboarding',
+    WAITLIST: '/waitlist',
+    ONBOARDING: '/onboarding',
+    ONBOARDING_DETAILS: '/onboarding/details',
+
+    AUTH:{
+        LOGIN: '/login',
+        SIGNUP: '/signup',
+        ME: '/me',
+    }
 }
