@@ -3,15 +3,15 @@ import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 
 export interface SiteNavigationItem {
-  label: string;
-  href: string;
+  label?: string;
+  href?: string;
   hasMenu?: boolean;
 }
 
 export interface SiteHeaderProps {
-  navigationItems: readonly SiteNavigationItem[];
-  signupHref: string;
-  signupLabel: string;
+  navigationItems?: readonly SiteNavigationItem[];
+  signupHref?: string;
+  signupLabel?: string;
 }
 
 export function SiteHeader({
@@ -27,8 +27,8 @@ export function SiteHeader({
         className="flex w-fit items-center gap-2"
       >
         <Image
-          src="/assets/Logo.png"
-          alt=""
+          src="/assets/Logo.svg"
+          alt="INFLU Logo"
           width={34}
           height={40}
           priority
@@ -39,7 +39,7 @@ export function SiteHeader({
         </span>
       </Link>
 
-      <nav
+      {/* <nav
         aria-label="Main navigation"
         className="col-span-2 row-start-2 mt-3 flex justify-center md:col-span-1 md:col-start-2 md:row-start-1 md:mt-0"
       >
@@ -56,14 +56,14 @@ export function SiteHeader({
             </li>
           ))}
         </ul>
-      </nav>
+      </nav> */}
 
-      <Link
+      {/* <Link
         href={signupHref}
         className="col-start-2 row-start-1 inline-flex h-9 items-center justify-center rounded-full bg-brand px-5 font-body text-caption font-medium text-white shadow-[0_3px_0_#bfc1ff] transition-colors hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand md:col-start-3 md:justify-self-end"
       >
         {signupLabel}
-      </Link>
+      </Link> */}
     </header>
   );
 }

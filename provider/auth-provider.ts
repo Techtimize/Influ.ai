@@ -1,4 +1,4 @@
-import useAuthStore from '@/src/store/AuthStore/authStore';
+import useAuthStore from '@/store/AuthsStore';
 
 
 export const setAuthTokenProvider = (token: string, role: string) => {
