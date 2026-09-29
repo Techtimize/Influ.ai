@@ -1,6 +1,10 @@
+"use client";
 import Image from "next/image";
-import Link from "next/link";
 import { Target } from "lucide-react";
+import { Button, Input } from "@base-ui/react";
+import { waitlistPlaceholders } from "@/constant/waitlist";
+import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
+import { WaitlistMutation } from "@/routes/bussiness/Bussiness-Mutation";
 
 export interface HeroAction {
   label: string;
@@ -29,6 +33,10 @@ export function LandingHero({
   imageAlt,
   actions,
 }: LandingHeroProps) {
+  const { mutate: waitlistMutation, isPending: waitlistIsPending } = WaitlistMutation();
+  const handleWaitlist = (email: string) => {
+    waitlistMutation(email);
+  }
   return (
     <section className="mx-auto grid w-full max-w-360 flex-1 items-center gap-8 px-6 pb-12 pt-8 md:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12 lg:px-10 lg:py-10">
       <div className="flex flex-col items-start">
@@ -47,7 +55,7 @@ export function LandingHero({
           {description}
         </p>
 
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        {/* <div className="mt-6 flex flex-wrap items-center gap-3">
           {actions.map(({ label, href, variant }) => (
             <Link
               key={label}
@@ -61,7 +69,31 @@ export function LandingHero({
               {label}
             </Link>
           ))}
-        </div>
+        </div> */}
+        <div className="mt-6 w-full max-w-lg">
+  {/* <div className="relative w-full max-w-md">
+    <Input
+      type="email"
+      placeholder="Enter your email"
+      className="h-14 w-full rounded-full border border-gray-300 bg-white pl-5 pr-36"
+    />
+
+    <Button
+      className="cursor-pointer border-none absolute right-1.5 top-1/2 h-11 -translate-y-1/2 rounded-full px-5 bg-brand text-white shadow-[0_3px_0_#bfc1ff] hover:bg-brand-700"
+    >
+      Join Waitlist
+    </Button>
+  </div> */}
+  <PlaceholdersAndVanishInput
+   placeholders={waitlistPlaceholders} 
+   onChange={() => {}}
+    onSubmit={(e) => {
+      const form = e.currentTarget;
+      const emailInput = form.elements.namedItem("email") as HTMLInputElement | null;
+      const email = emailInput?.value?.trim() ?? "";
+      if (email) handleWaitlist(email);
+    }} />
+     </div>
       </div>
 
       <div className="relative mx-auto w-full max-w-135">

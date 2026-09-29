@@ -1,0 +1,1 @@
+export const waitlistPlaceholders = ["Enter your email", "Set Your Goal", "Get Ready-to-use Insights","Company Report","Channel Analysis","Content Creation","Campaign Planning","Analytics & Reporting"];
