@@ -10,16 +10,27 @@ import { SignUpFormValidator } from "@/validator/Auth/signup-validator";
 
 export function WaitlistMutation() {
     return useMutation({
-        mutationFn: (email: string) => WaitlistApi(email),
-        onSuccess: ({ data }: { data: any }) => {
-            toast.success(data.message);
+        mutationFn: async (email: string) => {
+            const response = await WaitlistApi(email);
+            if (response?.success === false) {
+                throw new Error(response?.message || "Failed to add to waitlist");
+            }
+            return response;
         },
-        onError: (error: any) => {
-        const axiosError = error as AxiosError<{ detail: string }>;
-        toast.error('Failed to add to waitlist', {
-          description: axiosError.response?.data?.detail as string,
-        });
-      },
+        onSuccess: (response: { success?: boolean; message?: string }) => {
+            toast.success(response?.message || "Email added to waitlist successfully");
+        },
+        onError: (error: unknown) => {
+            const axiosError = error as AxiosError<{
+                success?: boolean;
+                message?: string;
+            }>;
+            const message =
+                axiosError.response?.data?.message ||
+                (error instanceof Error ? error.message : undefined) ||
+                "Failed to add to waitlist";
+            toast.error(message);
+        },
     });
 }
 

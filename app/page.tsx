@@ -24,7 +24,7 @@ export default function Home() {
           titleTail=" study your competitors and write your next win."
           description="Set your goal and let AI agents analyze what’s working across your market. Get ready-to-use insights, content, and campaigns without the guesswork."
           imageSrc="/assets/flowcircle.svg"
-          imageAlt="INFLU workflow diagram connecting research, planning, publishing, analytics, and content creation agents."
+          imageAlt="Fluenca workflow diagram connecting research, planning, publishing, analytics, and content creation agents."
           actions={[
             { label: "Get Started", href: "/signup", variant: "primary" },
             { label: "Sign Up Now", href: "/signup", variant: "secondary" },

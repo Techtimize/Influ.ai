@@ -23,19 +23,19 @@ export function SiteHeader({
     <header className="mx-auto grid w-full max-w-[1440px] grid-cols-[1fr_auto] items-center gap-x-4 px-6 py-4 md:grid-cols-[1fr_auto_1fr] md:px-8 lg:px-10">
       <Link
         href="/"
-        aria-label="INFLU home"
+        aria-label="Fluenca home"
         className="flex w-fit items-center gap-2"
       >
         <Image
           src="/assets/Logo.svg"
-          alt="INFLU Logo"
+          alt="Fluenca Logo"
           width={34}
           height={40}
           priority
           className="h-9 w-auto"
         />
         <span className="font-display text-2xl font-medium tracking-[0.04em] text-ink">
-          INFLU
+        FLUENCA
         </span>
       </Link>
 

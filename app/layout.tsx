@@ -4,6 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/provider/query-provider";
 import ErrorBoundary from "@/errors/ErrorBoundary";
 import localFont from "next/font/local";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -42,7 +43,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col">
               <QueryProvider>
-              <ErrorBoundary>{children}</ErrorBoundary>
+                <Toaster position="bottom-right" />
+                <ErrorBoundary>{children}</ErrorBoundary>
           </QueryProvider>
         </body>
     </html>
