@@ -11,10 +11,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
-import dynamic from 'next/dynamic';
-const DomeGallery = dynamic(() => import('@/src/constant/Influencers-data'), {
-  ssr: false,
-});
+
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import LoginMutation from '@/src/routes/Auth-Routes/Api/Auth-Hook/login-hook';
@@ -49,7 +46,7 @@ export default function Login() {
   return (
     <div className="min-h-screen w-full grid grid-cols-1 lg:grid-cols-[4fr_2fr]">
       <div className="hidden lg:block h-full">
-        <DomeGallery />
+        {/* <DomeGallery /> */}
       </div>
       {/* Right - Login Form */}
       <div className="min-h-screen w-full flex items-center justify-center bg-linear-to-br from-slate-950 via-black to-slate-900 p-6 lg:pl-0">
