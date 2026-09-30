@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
-import { OnboardingApi, WaitlistApi } from "./bussiness.routes";
+import { AnalyzeCompanyApi, OnboardingApi, WaitlistApi } from "./bussiness.routes";
 import { toast } from "sonner";
-import { OnboardingRequestProps, OnboardingResponseProps } from "@/types/onboarding-type";
+import { AnalyzeCompanyRequest, AnalyzeCompanyResponse, OnboardingRequestProps, OnboardingResponseProps } from "@/types/bussiness/onboarding-type";
 import { useMutation } from "@tanstack/react-query";
 import { getApiErrorMessage } from "@/errors/error-utils";
 
@@ -39,3 +39,19 @@ export function OnboardingMutation() {
       },
     });
   }
+
+
+export function AnalyzeCompanyMutation() {
+    return useMutation({
+        mutationFn: async (data: AnalyzeCompanyRequest) => {
+            const response = await AnalyzeCompanyApi(data);
+            return response;
+        },
+        onSuccess: (response: AnalyzeCompanyResponse) => {
+            toast.success(response.success ? "Company analyzed successfully" : "Failed to analyze company");
+        },
+        onError: (error: unknown) => {
+            toast.error(getApiErrorMessage(error, "Failed to analyze company"));
+        },
+    });
+}
