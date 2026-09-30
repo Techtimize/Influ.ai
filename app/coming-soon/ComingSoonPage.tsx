@@ -60,8 +60,7 @@ export function ComingSoonPage({
           className="h-9 w-auto"
         />
         <span className="font-[family-name:var(--font-plus-jakarta)] text-2xl font-semibold tracking-[0.02em] text-white sm:text-[1.75rem]">
-          Fluenca<span className="text-[#6560F2]">.ai</span>
-        </span>
+          Fluenca.ai</span>
       </motion.div>
 
       <div className="pointer-events-none absolute inset-x-4 bottom-4 z-30 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:inset-x-6 sm:bottom-6">
