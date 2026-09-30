@@ -1,0 +1,15 @@
+{
+  "comingSoon": {
+    "headlineSolid": "قريباً",
+    "headlineOutline": "جداً",
+    "highlightLead": "شيء جديد في الطريق.",
+    "highlightBody": "انضم إلى قائمة الانتظار وكن أول من يعرف عند إطلاق Fluenca.",
+    "languageSwitch": "تبديل اللغة",
+    "emailPlaceholder": "أدخل بريدك الإلكتروني",
+    "submit": "انضم للقائمة",
+    "submitting": "جارٍ الانضمام…",
+    "formFooter": "بدون رسائل مزعجة. يمكنك إلغاء الاشتراك في أي وقت.",
+    "successMessage": "أنت على القائمة. سنتواصل معك قريباً.",
+    "errorMessage": "حدث خطأ ما. يرجى المحاولة مرة أخرى."
+  }
+}

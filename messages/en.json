@@ -1,0 +1,14 @@
+{
+  "comingSoon": {
+    "headlineSolid": "Coming",
+    "headlineOutline": "Soon",
+    "highlightLead": "Something new is on the way.",
+    "highlightBody": "Join the waitlist and be first to know when Fluenca.ai launches.",
+    "languageSwitch": "Switch language",
+    "emailPlaceholder": "Enter your email",
+    "submit": "Join waitlist",
+    "submitting": "Joining…",
+    "successMessage": "You're on the list. We'll be in touch soon.",
+    "errorMessage": "Something went wrong. Please try again."
+  }
+}

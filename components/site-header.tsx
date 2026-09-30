@@ -35,7 +35,7 @@ export function SiteHeader({
           className="h-9 w-auto"
         />
         <span className="font-display text-2xl font-medium tracking-[0.04em] text-ink">
-        FLUENCA
+        Fluenca.ai
         </span>
       </Link>
 
