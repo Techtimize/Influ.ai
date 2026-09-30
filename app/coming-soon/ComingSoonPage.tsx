@@ -38,7 +38,7 @@ export function ComingSoonPage({
           aria-hidden="true"
         >
           <Aurora
-            colorStops={["#5542FF", "#94FFFA", "#5542FF"]}
+            colorStops={["#4D5EFF", "#4F60FF", "#3E5DFF"]}
             amplitude={1.1}
             blend={0.55}
             speed={0.85}

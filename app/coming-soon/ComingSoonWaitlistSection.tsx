@@ -123,7 +123,7 @@ export function ComingSoonWaitlistSection(
                   placeholder={t("emailPlaceholder")}
                   aria-invalid={Boolean(errors.email)}
                   dir="ltr"
-                  className="coming-soon-email-input min-w-0 flex-1 px-4 py-3 text-left text-sm scheme-dark"
+                  className="coming-soon-email-input min-w-0 flex-1 border-0 bg-transparent px-4 py-3 text-left text-sm shadow-none scheme-dark focus-visible:border-0 focus-visible:ring-0 dark:bg-transparent"
                   style={{
                     color: "#fff",
                     WebkitTextFillColor: "#fff",
