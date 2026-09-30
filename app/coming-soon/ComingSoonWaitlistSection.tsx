@@ -45,17 +45,13 @@ export function ComingSoonWaitlistSection(
     setStatusMessage(null);
     waitlistMutation(values.email, {
       onSuccess: (response) => {
-        setStatusMessage(
-          response?.message || t("successMessage"),
-        );
+        setStatusMessage(response?.message || t("successMessage"));
         setSubmitted(true);
       },
       onError: (error) => {
-        const message =
-          error instanceof Error
-            ? error.message
-            : t("errorMessage");
-        setStatusMessage(message);
+        setStatusMessage(
+          error instanceof Error ? error.message : t("errorMessage"),
+        );
       },
     });
   };

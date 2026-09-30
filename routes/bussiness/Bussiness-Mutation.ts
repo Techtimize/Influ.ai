@@ -7,29 +7,48 @@ import { AxiosError } from "axios";
 import { LoginFormValidator } from "@/validator/Auth/login-validator";
 import { SignUpFormValidator } from "@/validator/Auth/signup-validator";
 
+function getWaitlistErrorMessage(error: unknown, fallback = "Failed to add to waitlist") {
+  const axiosError = error as AxiosError<{
+    success?: boolean;
+    message?: string;
+    detail?: string;
+    error?: string;
+  }>;
+  const apiMessage =
+    axiosError.response?.data?.message ||
+    axiosError.response?.data?.detail ||
+    axiosError.response?.data?.error;
+
+  if (apiMessage) return apiMessage;
+
+  if (
+    error instanceof Error &&
+    !/^Request failed with status code \d+$/i.test(error.message)
+  ) {
+    return error.message;
+  }
+
+  return fallback;
+}
 
 export function WaitlistMutation() {
     return useMutation({
         mutationFn: async (email: string) => {
-            const response = await WaitlistApi(email);
-            if (response?.success === false) {
-                throw new Error(response?.message || "Failed to add to waitlist");
+            try {
+                const response = await WaitlistApi(email);
+                if (response?.success === false) {
+                    throw new Error(response?.message || "Failed to add to waitlist");
+                }
+                return response;
+            } catch (error) {
+                throw new Error(getWaitlistErrorMessage(error));
             }
-            return response;
         },
         onSuccess: (response: { success?: boolean; message?: string }) => {
             toast.success(response?.message || "Email added to waitlist successfully");
         },
         onError: (error: unknown) => {
-            const axiosError = error as AxiosError<{
-                success?: boolean;
-                message?: string;
-            }>;
-            const message =
-                axiosError.response?.data?.message ||
-                (error instanceof Error ? error.message : undefined) ||
-                "Failed to add to waitlist";
-            toast.error(message);
+            toast.error(getWaitlistErrorMessage(error));
         },
     });
 }
