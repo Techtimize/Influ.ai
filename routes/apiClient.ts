@@ -1,6 +1,6 @@
 import { getAuthTokenProvider } from "@/provider/auth-provider";
 import useAuthStore from "@/store/AuthsStore";
-import { BUSSINESSENDPOINT } from "./bussiness/Bussiness-Endpoint";
+import { AUTHENDPOINT } from "./auth/Auth-Endpoint";
 import { toast } from "sonner";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
@@ -28,11 +28,11 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     const isLoginRequest =
-      originalRequest?.url?.includes(BUSSINESSENDPOINT.ONBOARDING) &&
+      originalRequest?.url?.includes(AUTHENDPOINT.LOGIN) &&
       originalRequest?.method === 'post';
 
     if (error.response && error.response.status === 401 && !isLoginRequest) {
-      useAuthStore().clearAuth();
+      useAuthStore.getState().clearAuth();
 
       if (error.response?.status === 401) {
         toast( 'Unauthorized access',{

@@ -1,10 +1,10 @@
 import { AUTHENDPOINT } from "./Auth-Endpoint";
 import api from "../apiClient";
-import { LoginFormValidator } from "@/validator/Auth/login-validator";
+import { LoginRequestProps, LoginResponseProps } from "@/types/Auth/login-type";
 import { SignUpRequestProps, SignUpResponseProps } from "@/types/Auth/signup-type";
 
 
-export const LoginApi = async (data: LoginFormValidator) => {
+export const LoginApi = async (data: LoginRequestProps): Promise<LoginResponseProps> => {
     const response = await api.post(AUTHENDPOINT.LOGIN, data);
     return response.data;
 }

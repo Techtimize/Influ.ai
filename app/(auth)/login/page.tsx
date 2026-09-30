@@ -10,6 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -31,12 +32,12 @@ export default function Login() {
   });
 
   const SignInMutation = LoginMutation();
+  const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
 
   const onSubmit = (data: LoginFormValidator) => {
-    SignInMutation.mutate({
-      email: data.email,
-      password: data.password,
+    SignInMutation.mutate(data, {
+      onSuccess: () => router.push('/onboarding'),
     });
   };
 
