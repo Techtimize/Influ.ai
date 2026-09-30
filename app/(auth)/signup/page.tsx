@@ -4,6 +4,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { SignupMutation } from '@/routes/auth/Auth-Mutation';
+import { PAGE_ROUTES } from '@/constant/page-routes';
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,7 +60,7 @@ export default function SignUpPage() {
         confirm_password: confirmPassword,
       },
       {
-        onSuccess: () => router.push('/login'),
+        onSuccess: () => router.push(PAGE_ROUTES.LOGIN),
       },
     );
   };
@@ -179,7 +180,7 @@ export default function SignUpPage() {
                   <span>Remember Me</span>
                 </label>
                 <Link
-                  href="/auth/forgot-password"
+                  href={PAGE_ROUTES.FORGOT_PASSWORD}
                   className="hover:text-gray-700"
                 >
                   Forgot password?

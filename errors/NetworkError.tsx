@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 interface NetworkErrorProps {
   message?: string;
@@ -37,7 +38,7 @@ const NetworkError = ({
             </Button>
           )}
           <Button onClick={handleRetry}>Try Again</Button>
-          <Button variant="outline" onClick={() => router.push("/")}>
+          <Button variant="outline" onClick={() => router.push(PAGE_ROUTES.HOME)}>
             Back to Home
           </Button>
         </div>

@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 const ForbiddenError = () => {
   const router = useRouter();
@@ -18,7 +19,7 @@ const ForbiddenError = () => {
           <Button variant="outline" onClick={() => router.back()}>
             Go Back
           </Button>
-          <Button onClick={() => router.push("/")}>Back to Home</Button>
+          <Button onClick={() => router.push(PAGE_ROUTES.HOME)}>Back to Home</Button>
         </div>
       </div>
     </div>

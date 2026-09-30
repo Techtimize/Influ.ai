@@ -7,11 +7,12 @@ import AssetImage from "@/components/shared/assetImage";
 import type { NavItem } from "@/types/dashboard";
 import { getIcon } from "@/utils/icon-utils";
 import { FOCUS_RING } from "@/utils/ui-classes";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 const DEFAULT_NAV: NavItem[] = [
-  { id: "home", label: "Home", icon: "home", href: "/dashboard" },
+  { id: "home", label: "Home", icon: "home", href: PAGE_ROUTES.DASHBOARD },
   { id: "dashboard", label: "Dashboard", icon: "dashboard", href: "#" },
-  { id: "overview", label: "Company overview", icon: "clipboard", href: "/company-overview" },
+  { id: "overview", label: "Company overview", icon: "clipboard", href: PAGE_ROUTES.COMPANY_OVERVIEW },
   { id: "billing", label: "Billing", icon: "billing", href: "#" },
 ];
 

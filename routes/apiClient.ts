@@ -3,6 +3,7 @@ import useAuthStore from "@/store/AuthsStore";
 import { AUTHENDPOINT } from "./auth/Auth-Endpoint";
 import { toast } from "sonner";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -46,7 +47,7 @@ api.interceptors.response.use(
         toast.error('Session expired. Please login again.', {
           description: 'Session expired. Please login again.',
         });
-        window.location.href = '/login';
+        window.location.href = PAGE_ROUTES.LOGIN;
       }
     }
 

@@ -1,6 +1,6 @@
-import { OnboardingFormValidator } from "@/validator/Auth/onboarding-validator";
 import { BUSSINESSENDPOINT } from "./Bussiness-Endpoint";
 import api from "../apiClient";
+import { OnboardingRequestProps, OnboardingResponseProps } from "@/types/onboarding-type";
 
 
 export const WaitlistApi = async (email: string) => {
@@ -8,12 +8,12 @@ export const WaitlistApi = async (email: string) => {
     return response.data;
 }
 
-export const OnboardingApi = async (data: OnboardingFormValidator) => {
-    const response = await api.put(BUSSINESSENDPOINT.ONBOARDING, data);
+export const OnboardingApi = async (data: OnboardingRequestProps): Promise<OnboardingResponseProps> => {
+    const response = await api.post(BUSSINESSENDPOINT.ONBOARDING, data);
     return response.data;
 }
 
-export const OnboardingDetailsApi = async () => {
-    const response = await api.get(BUSSINESSENDPOINT.ONBOARDING_DETAILS);
+export const OnboardingDetailsApi = async (): Promise<OnboardingResponseProps> => {
+    const response = await api.get(BUSSINESSENDPOINT.ONBOARDING);
     return response.data;
 }

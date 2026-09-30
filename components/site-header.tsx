@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ChevronDown } from "lucide-react";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 export interface SiteNavigationItem {
   label?: string;
@@ -22,7 +23,7 @@ export function SiteHeader({
   return (
     <header className="mx-auto grid w-full max-w-[1440px] grid-cols-[1fr_auto] items-center gap-x-4 px-6 py-4 md:grid-cols-[1fr_auto_1fr] md:px-8 lg:px-10">
       <Link
-        href="/"
+        href={PAGE_ROUTES.HOME}
         aria-label="Fluenca home"
         className="flex w-fit items-center gap-2"
       >

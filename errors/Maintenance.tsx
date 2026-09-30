@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 const MaintenanceError = () => {
   const router = useRouter();
@@ -19,7 +20,7 @@ const MaintenanceError = () => {
           <Button variant="outline" onClick={() => router.refresh()}>
             Refresh Page
           </Button>
-          <Button onClick={() => router.push("/")}>Back to Home</Button>
+          <Button onClick={() => router.push(PAGE_ROUTES.HOME)}>Back to Home</Button>
         </div>
       </div>
     </div>
