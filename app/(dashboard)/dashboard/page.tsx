@@ -37,7 +37,7 @@ export default function DashboardPage() {
         }`}
       >
         <main className="min-w-0">
-          <TopBar user={data.user}
+          <TopBar user={data.user} />
           <div className={`grid gap-4 ${chatOpen ? "" : "lg:grid-cols-[minmax(0,1fr)_360px]"}`}>
             <CompanyCard company={data.company} />
             <DocumentationCard items={data.docs} />
