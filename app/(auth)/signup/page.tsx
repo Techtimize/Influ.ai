@@ -2,6 +2,8 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { SignupMutation } from '@/routes/auth/Auth-Mutation';
 
 export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,6 +14,8 @@ export default function SignUpPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [emailError, setEmailError] = useState('');
   const [passwordMismatchError, setPasswordMismatchError] = useState('');
+  const signupMutation = SignupMutation();
+  const router = useRouter();
 
   const validateEmail = (value: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -43,12 +47,21 @@ export default function SignUpPage() {
       setEmailError('Please enter a valid email address');
       return;
     }
-    if (confirmPassword && confirmPassword !== password) {
+    if (confirmPassword !== password) {
       setPasswordMismatchError('Passwords do not match');
       return;
     }
 
-    console.log('Sign up:', { email, password, rememberMe });
+    signupMutation.mutate(
+      {
+        email,
+        password,
+        confirm_password: confirmPassword,
+      },
+      {
+        onSuccess: () => router.push('/login'),
+      },
+    );
   };
 
   return (
@@ -176,9 +189,10 @@ export default function SignUpPage() {
               {/* Sign Up Button */}
               <button
                 type="submit"
-                className="w-full h-10 sm:h-11 rounded-full bg-[#5B5BD6] text-white text-sm sm:text-base font-semibold shadow-lg hover:bg-[#4a4ac5] transition-all"
+                disabled={signupMutation.isPending}
+                className="w-full h-10 sm:h-11 rounded-full bg-[#5B5BD6] text-white text-sm sm:text-base font-semibold shadow-lg hover:bg-[#4a4ac5] transition-all disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Sign up
+                {signupMutation.isPending ? 'Signing up...' : 'Sign up'}
               </button>
             </form>
 

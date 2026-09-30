@@ -4,6 +4,7 @@ import {
     NotFoundErrorType,
     MaintenanceErrorType,
 } from "./ErrorBoundary";
+import { AxiosError } from "axios";
 
 export const throwNetworkError = (message?: string): never => {
     throw new NetworkErrorType(message);
@@ -57,3 +58,28 @@ export const isNetworkError = (error: unknown): boolean => {
     return false;
 };
 
+// Picks the backend's message from an API error, falling back when none is sent.
+export const getApiErrorMessage = (error: unknown, fallback = "Something went wrong"): string => {
+    const axiosError = error as AxiosError<{
+        message?: string;
+        detail?: unknown;
+        error?: string;
+    }>;
+    const data = axiosError.response?.data;
+    const detail = data?.detail;
+    const apiMessage =
+        data?.message ||
+        (typeof detail === "string" ? detail : undefined) ||
+        data?.error;
+
+    if (apiMessage) return apiMessage;
+
+    if (
+        error instanceof Error &&
+        !/^Request failed with status code \d+$/i.test(error.message)
+    ) {
+        return error.message;
+    }
+
+    return fallback;
+};

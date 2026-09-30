@@ -1,6 +1,6 @@
 
 export const AUTHENDPOINT = {
-    LOGIN: '/login',
-    SIGNUP: '/signup',
-    ME: '/me',
+    LOGIN: '/auth/login',
+    SIGNUP: '/auth/signup',
+    ME: '/auth/me',
 }
