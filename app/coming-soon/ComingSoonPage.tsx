@@ -59,7 +59,7 @@ export function ComingSoonPage({
           priority
           className="h-9 w-auto"
         />
-        <span className="text-brand-primary font-bold tracking-tight sm:text-xl">
+        <span className="font-[family-name:var(--font-plus-jakarta)] text-2xl font-semibold tracking-[0.02em] text-white sm:text-[1.75rem]">
           Fluenca.ai
         </span>
       </motion.div>

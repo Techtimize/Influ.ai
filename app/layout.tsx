@@ -41,7 +41,7 @@ const googleSansCode = localFont({
 export const metadata: Metadata = {
   metadataBase: new URL("https://fluenca.ai"),
   title: {
-    default: "Fluenca.ai — Coming Soon",
+    default: "Fluenca.ai",
     template: "%s | Fluenca.ai",
   },
   description:
@@ -72,6 +72,11 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: ["/icon.svg"],
+    apple: [{ url: "/icon.svg" }],
   },
 };
 
