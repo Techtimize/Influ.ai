@@ -5,6 +5,7 @@ export const BUSSINESSENDPOINT = {
     ONBOARDING_DETAILS: '/onboarding/details',
 
     ANALYZE_COMPANY: '/analyzeCompany/analyzeCompany',
+    ANALYZE_COMPANY_RESULTS:(company_id: string) => `/analyzeCompany/results/${company_id}`,
     GROWTH: '/social-growth',
     COMPETITOR_ANALYSIS: '/competitorAnalysis',
 
@@ -14,7 +15,4 @@ export const BUSSINESSENDPOINT = {
     GOOGLE_TRENDS_EXPLORE: '/google-trends/explore',
     GOOGLE_TRENDS_FILTERS: '/google-trends/filters',
     }
-
-
-    
 }

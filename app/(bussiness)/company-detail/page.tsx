@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { Bell } from 'lucide-react';
 import { PAGE_ROUTES } from '@/constant/page-routes';
 
-// Temporary data. Replace with the analysis API response later.
 const DUMMY_COMPANY = {
     name: 'Brand.co',
     status: 'Building live...',
