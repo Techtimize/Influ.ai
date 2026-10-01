@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { SignupMutation } from '@/routes/auth/Auth-Mutation';
 
@@ -72,7 +73,7 @@ export default function SignUpPage() {
           <div className="w-full max-w-[420px] sm:max-w-[460px] md:max-w-[500px] space-y-3 py-5 sm:py-4 px-6 sm:px-8 md:px-12 lg:px-16">
             {/* Logo */}
             <div className="flex justify-center">
-              <img
+              <Image
                 src="/assets/logo.svg"
                 alt="Influ.ai Logo"
                 className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
@@ -224,13 +225,13 @@ export default function SignUpPage() {
         {/* Right Side - Image Panel */}
         <section className="hidden lg:flex lg:w-1/2 sticky top-0 h-screen m-4 overflow-hidden rounded-3xl bg-[#4F52D9] p-6 items-center justify-center">
           {/* Background image */}
-          <img
+          <Image
             src="/assets/signup-bg.png"
             alt=""
             className="absolute inset-0 w-full h-full object-cover"
           />
           {/* Dashboard preview image */}
-          <img
+          <Image
             src="/assets/signup-preview.png"
             alt="Dashboard preview"
             className="relative z-10 w-full h-full object-contain"
