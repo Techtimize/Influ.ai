@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Bell, Check, Pencil } from "lucide-react";
 import { IntakeQuery } from "@/routes/company-details/CompanyDetails-Query";
+import { AnswerQuestionMutation, CompleteIntakeMutation } from "@/routes/bussiness/Bussiness-Mutation";
 import { IntakeSection } from "@/types/company-details-type";
 
 /* ---------- Types ---------- */
@@ -58,14 +59,13 @@ function ProgressRing({ value, total }: { value: number; total: number }) {
 }
 
 /* ---------- One question/answer card ---------- */
-function FieldCard({ field, onChange }: { field: CompanyField; onChange: (patch: Partial<CompanyField>) => void }) {
+function FieldCard({ field }: { field: CompanyField }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState(field.value);
+  const { mutate: saveAnswer, isPending } = AnswerQuestionMutation();
 
-  const save = () => {
-    setEditing(false);
-    if (draft !== field.value) onChange({ value: draft, reviewed: true });
-  };
+  const save = (answer: string) =>
+    saveAnswer({ question_id: field.id, answer }, { onSuccess: () => setEditing(false) });
 
   return (
     <div className="overflow-hidden rounded-xl border border-[#E6E8F5] bg-white">
@@ -82,10 +82,11 @@ function FieldCard({ field, onChange }: { field: CompanyField; onChange: (patch:
           </button>
           <button
             type="button"
-            onClick={() => onChange({ reviewed: !field.reviewed })}
+            onClick={() => save(field.value)}
+            disabled={field.reviewed || !field.value || isPending}
             aria-pressed={field.reviewed}
-            aria-label={field.reviewed ? "Mark as not reviewed" : "Mark as reviewed"}
-            className={`rounded-full p-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B57E6]/40 ${
+            aria-label={field.reviewed ? "Reviewed" : "Confirm answer"}
+            className={`rounded-full p-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B57E6]/40 disabled:cursor-default ${
               field.reviewed ? "bg-[#5B57E6] text-white" : "bg-white text-neutral-400 hover:text-neutral-700"
             }`}
           >
@@ -96,18 +97,33 @@ function FieldCard({ field, onChange }: { field: CompanyField; onChange: (patch:
 
       <div className="px-4 py-3.5">
         {editing ? (
-          <textarea
-            autoFocus
-            value={draft}
-            rows={3}
-            onChange={(e) => setDraft(e.target.value)}
-            onBlur={save}
-            onKeyDown={(e) => {
-              if (e.key === "Escape") setEditing(false);
-              if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) save();
-            }}
-            className="w-full resize-none rounded-md border border-[#CFD3F2] p-2 text-xs leading-5 text-neutral-800 outline-none focus:ring-2 focus:ring-[#5B57E6]/30"
-          />
+          <div className="space-y-2">
+            <textarea
+              autoFocus
+              value={draft}
+              rows={3}
+              onChange={(e) => setDraft(e.target.value)}
+              onKeyDown={(e) => e.key === "Escape" && setEditing(false)}
+              className="w-full resize-none rounded-md border border-[#CFD3F2] p-2 text-xs leading-5 text-neutral-800 outline-none focus:ring-2 focus:ring-[#5B57E6]/30"
+            />
+            <div className="flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={() => setEditing(false)}
+                className="h-7 rounded-full px-3 text-xs text-neutral-600 hover:bg-neutral-100"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={() => save(draft.trim())}
+                disabled={isPending}
+                className="h-7 rounded-full bg-[#5B57E6] px-4 text-xs font-semibold text-white hover:bg-[#4a46d4] disabled:opacity-60"
+              >
+                {isPending ? "Saving..." : "Save"}
+              </button>
+            </div>
+          </div>
         ) : field.value ? (
           <p className="text-xs leading-5 text-neutral-600">{field.value}</p>
         ) : (
@@ -159,18 +175,10 @@ function TopBar() {
 /* ---------- Page ---------- */
 export default function CompanyOverviewPage() {
   const { data: intake, isLoading } = IntakeQuery();
-  // Local edits made on this screen, keyed by question id.
-  const [edits, setEdits] = useState<Record<string, Partial<CompanyField>>>({});
+  const { mutate: completeIntake, isPending: isSaving } = CompleteIntakeMutation();
   const [activeId, setActiveId] = useState("");
 
-  const sections = useMemo(
-    () =>
-      toCompanySections(intake?.sections ?? []).map((s) => ({
-        ...s,
-        fields: s.fields.map((f) => ({ ...f, ...edits[f.id] })),
-      })),
-    [intake, edits]
-  );
+  const sections = useMemo(() => toCompanySections(intake?.sections ?? []), [intake]);
 
   const { total, reviewed } = useMemo(() => {
     const all = sections.flatMap((s) => s.fields);
@@ -193,8 +201,6 @@ export default function CompanyOverviewPage() {
     return () => observer.disconnect();
   }, [sections]);
 
-  const updateField = (fieldId: string, patch: Partial<CompanyField>) =>
-    setEdits((prev) => ({ ...prev, [fieldId]: { ...prev[fieldId], ...patch } }));
 
   const scrollTo = (id: string) => {
     setActiveId(id);
@@ -251,11 +257,24 @@ export default function CompanyOverviewPage() {
                 <h2 className="mb-3 text-sm text-neutral-800">{s.title}</h2>
                 <div className="space-y-3">
                   {s.fields.map((f) => (
-                    <FieldCard key={f.id} field={f} onChange={(patch) => updateField(f.id, patch)} />
+                    <FieldCard key={f.id} field={f} />
                   ))}
                 </div>
               </section>
             ))}
+
+          {!isLoading && (
+            <div className="flex justify-end pt-6">
+              <button
+                type="button"
+                onClick={() => completeIntake()}
+                disabled={isSaving}
+                className="h-9 rounded-full bg-[#5B57E6] px-6 text-sm font-semibold text-white hover:bg-[#4a46d4] disabled:cursor-not-allowed disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#5B57E6]/40"
+              >
+                {isSaving ? "Completing..." : "complete"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </main>

@@ -52,3 +52,8 @@ export interface IntakeResponseProps {
   summary: IntakeSummary;
   sections: IntakeSection[];
 }
+
+export interface AnswerQuestionRequestProps {
+  question_id: string;
+  answer: string | null;
+}
