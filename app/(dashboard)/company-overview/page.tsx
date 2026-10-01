@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { Bell, Check, Pencil } from "lucide-react";
+import { IntakeQuery } from "@/routes/company-details/CompanyDetails-Query";
+import { IntakeSection } from "@/types/company-details-type";
 
 /* ---------- Types ---------- */
 type CompanyField = {
@@ -17,35 +19,18 @@ type CompanySection = {
   fields: CompanyField[];
 };
 
-/* ---------- Temporary data (replace with API response later) ---------- */
-const MOCK_SECTIONS: CompanySection[] = [
-  {
-    id: "company-basics",
-    title: "Company basics",
-    fields: [
-      { id: "legal-name", label: "What is your company's legal/registered name?", value: "Techtimize LLC", reviewed: true },
-      { id: "industry", label: "Industry", value: "Software", reviewed: true },
-      { id: "primary-product", label: "Primary product or service", value: "Digital Product, B2C, B2B, Digital Services", reviewed: true },
-      { id: "website", label: "Website Link", value: "https://ardenandco.com", reviewed: true },
-    ],
-  },
-  {
-    id: "audience-positioning",
-    title: "Audience & Positioning",
-    fields: [
-      { id: "target-audience", label: "Target audience", value: "Primarily 24–38 year olds interested in skincare & beauty, researched from site content and product framing.", reviewed: true },
-      { id: "gender-skew", label: "Gender skew of audience", value: "Skews female (~70%), based on site imagery and product positioning.", reviewed: false },
-      { id: "price-positioning", label: "Price positioning", value: "Mid-to-premium — priced above mass market, below luxury tier.", reviewed: false },
-      { id: "marketing-goal", label: "Primary marketing goal", value: "\"Botanical facial serums\" positioned around simplicity and quality over volume of ingredients/features.", reviewed: false },
-    ],
-  },
-  { id: "contact-location", title: "Contact & Location", fields: [] },
-  { id: "services", title: "Services", fields: [] },
-  { id: "content-performance", title: "Content performance", fields: [] },
-  { id: "differentiators", title: "What Makes You Different", fields: [] },
-  { id: "history-team", title: "History & Team", fields: [] },
-  { id: "ideal-client", title: "Ideal Client", fields: [] },
-];
+/* ---------- API → UI mapping ---------- */
+const toCompanySections = (sections: IntakeSection[]): CompanySection[] =>
+  sections.map((section) => ({
+    id: section.name.toLowerCase().replace(/[^a-z0-9]+/g, "-"),
+    title: section.name,
+    fields: section.questions.map((question) => ({
+      id: question.question_id,
+      label: question.question,
+      value: question.answer ?? "",
+      reviewed: question.status === "confirmed",
+    })),
+  }));
 
 /* ---------- Progress ring ---------- */
 function ProgressRing({ value, total }: { value: number; total: number }) {
@@ -173,9 +158,19 @@ function TopBar() {
 
 /* ---------- Page ---------- */
 export default function CompanyOverviewPage() {
-  // TODO: replace MOCK_SECTIONS with the AI-generated data from the API.
-  const [sections, setSections] = useState<CompanySection[]>(MOCK_SECTIONS);
-  const [activeId, setActiveId] = useState(MOCK_SECTIONS[0].id);
+  const { data: intake, isLoading } = IntakeQuery();
+  // Local edits made on this screen, keyed by question id.
+  const [edits, setEdits] = useState<Record<string, Partial<CompanyField>>>({});
+  const [activeId, setActiveId] = useState("");
+
+  const sections = useMemo(
+    () =>
+      toCompanySections(intake?.sections ?? []).map((s) => ({
+        ...s,
+        fields: s.fields.map((f) => ({ ...f, ...edits[f.id] })),
+      })),
+    [intake, edits]
+  );
 
   const { total, reviewed } = useMemo(() => {
     const all = sections.flatMap((s) => s.fields);
@@ -198,14 +193,8 @@ export default function CompanyOverviewPage() {
     return () => observer.disconnect();
   }, [sections]);
 
-  const updateField = (sectionId: string, fieldId: string, patch: Partial<CompanyField>) =>
-    setSections((prev) =>
-      prev.map((s) =>
-        s.id !== sectionId
-          ? s
-          : { ...s, fields: s.fields.map((f) => (f.id === fieldId ? { ...f, ...patch } : f)) }
-      )
-    );
+  const updateField = (fieldId: string, patch: Partial<CompanyField>) =>
+    setEdits((prev) => ({ ...prev, [fieldId]: { ...prev[fieldId], ...patch } }));
 
   const scrollTo = (id: string) => {
     setActiveId(id);
@@ -229,7 +218,7 @@ export default function CompanyOverviewPage() {
           <nav aria-label="Overview sections" className="mt-4">
             <ul className="space-y-1">
               {sections.map((s) => {
-                const active = s.id === activeId;
+                const active = s.id === (activeId || sections[0]?.id);
                 return (
                   <li key={s.id}>
                     <button
@@ -254,6 +243,7 @@ export default function CompanyOverviewPage() {
 
         {/* Right: sections and fields */}
         <div className="min-w-0 rounded-3xl border border-[#E6E8F5] bg-white/80 p-5 backdrop-blur sm:p-8">
+          {isLoading && <p className="text-sm text-neutral-500">Loading company overview...</p>}
           {sections
             .filter((s) => s.fields.length > 0)
             .map((s) => (
@@ -261,7 +251,7 @@ export default function CompanyOverviewPage() {
                 <h2 className="mb-3 text-sm text-neutral-800">{s.title}</h2>
                 <div className="space-y-3">
                   {s.fields.map((f) => (
-                    <FieldCard key={f.id} field={f} onChange={(patch) => updateField(s.id, f.id, patch)} />
+                    <FieldCard key={f.id} field={f} onChange={(patch) => updateField(f.id, patch)} />
                   ))}
                 </div>
               </section>
