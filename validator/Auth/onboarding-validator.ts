@@ -1,16 +1,15 @@
 import { z } from 'zod';
 
-const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
 export const OnboardingFormSchema = z
     .object({
         company_name: z
             .string()
-            .min(3, { message: 'Company name must be at least 3 characters long.' }),
-        industry: z.string().min(2, { message: 'Industry must be at least 2 characters long.' }),
-        services: z.string().min(2, { message: 'Services must be at least 2 characters long.' }),
-        language: z.string().min(2, { message: 'Language must be at least 2 characters long.' }),
-        websitelink: z.string().min(2, { message: 'Website link must be at least 2 characters long.' }),
+            .min(2, { message: 'Company name must be at least 2 characters long.' }),
+        industry: z.string().min(2, { message: 'Please select an industry.' }),
+        primary_product_or_service: z.string().min(2, { message: 'Services must be at least 2 characters long.' }),
+        language: z.string().min(2, { message: 'Please select a language.' }),
+        website_url: z.string().min(1, { message: 'Please enter your website link.' }),
+        target_country: z.string().min(2, { message: 'Please select a target country.' }),
     });
 
 

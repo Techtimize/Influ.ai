@@ -1,9 +1,10 @@
 import { useRouter } from "next/navigation";
 import { AnalyzeCompanyApi, OnboardingApi, WaitlistApi } from "./bussiness.routes";
 import { toast } from "sonner";
-import { AnalyzeCompanyRequest, AnalyzeCompanyResponse, OnboardingRequestProps, OnboardingResponseProps } from "@/types/bussiness/onboarding-type";
 import { useMutation } from "@tanstack/react-query";
+import { AnalyzeCompanyRequest, AnalyzeCompanyResponse, OnboardingRequestProps, OnboardingResponseProps } from "@/types/bussiness/onboarding-type";
 import { getApiErrorMessage } from "@/errors/error-utils";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 export function WaitlistMutation() {
     return useMutation({
@@ -28,17 +29,18 @@ export function WaitlistMutation() {
 }
 
 export function OnboardingMutation() {
-    // const router = useRouter();
+    const router = useRouter();
     return useMutation({
-      mutationFn: (data: OnboardingRequestProps) => OnboardingApi(data),
-      onSuccess: (response: OnboardingResponseProps) => {
-        toast.success(response?.message || "Onboarding saved successfully");
-      },
-      onError: (error) => {
-        toast.error(getApiErrorMessage(error, "Failed to save onboarding"));
-      },
+        mutationFn: (data: OnboardingRequestProps) => OnboardingApi(data),
+        onSuccess: (response: OnboardingResponseProps) => {
+            toast.success(`${response.company_name ?? "Company"} details saved successfully`);
+            router.push(PAGE_ROUTES.COMPANY_DETAIL);
+        },
+        onError: (error) => {
+            toast.error(getApiErrorMessage(error, "Failed to save onboarding"));
+        },
     });
-  }
+}
 
 
 export function AnalyzeCompanyMutation() {

@@ -1,8 +1,9 @@
 import { getAuthTokenProvider } from "@/provider/auth-provider";
 import useAuthStore from "@/store/AuthsStore";
-import { BUSSINESSENDPOINT } from "./bussiness/Bussiness-Endpoint";
+import { AUTHENDPOINT } from "./auth/Auth-Endpoint";
 import { toast } from "sonner";
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from "axios";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
@@ -28,11 +29,11 @@ api.interceptors.response.use(
     const originalRequest = error.config;
 
     const isLoginRequest =
-      originalRequest?.url?.includes(BUSSINESSENDPOINT.ONBOARDING) &&
+      originalRequest?.url?.includes(AUTHENDPOINT.LOGIN) &&
       originalRequest?.method === 'post';
 
     if (error.response && error.response.status === 401 && !isLoginRequest) {
-      useAuthStore().clearAuth();
+      useAuthStore.getState().clearAuth();
 
       if (error.response?.status === 401) {
         toast( 'Unauthorized access',{
@@ -46,7 +47,7 @@ api.interceptors.response.use(
         toast.error('Session expired. Please login again.', {
           description: 'Session expired. Please login again.',
         });
-        window.location.href = '/login';
+        window.location.href = PAGE_ROUTES.LOGIN;
       }
     }
 

@@ -2,14 +2,18 @@ import { LoginApi, SignupApi } from "./auth.routes";
 import { toast } from "sonner";
 import { useMutation } from "@tanstack/react-query";
 import { getApiErrorMessage } from "@/errors/error-utils";
-import { LoginFormValidator } from "@/validator/Auth/login-validator";
+import { LoginRequestProps, LoginResponseProps } from "@/types/Auth/login-type";
+import { setAuthTokenProvider } from "@/provider/auth-provider";
+import useAuthStore from "@/store/AuthsStore";
 import { SignUpRequestProps, SignUpResponseProps } from "@/types/Auth/signup-type";
 
 export function LoginMutation() {
   return useMutation({
-    mutationFn: (data: LoginFormValidator) => LoginApi(data),
-    onSuccess: (response: { message?: string }) => {
-      toast.success(response?.message || "Logged in successfully");
+    mutationFn: (data: LoginRequestProps) => LoginApi(data),
+    onSuccess: (response: LoginResponseProps) => {
+      setAuthTokenProvider(response.access_token, response.user.role);
+      useAuthStore.getState().setUserId(response.user.user_id);
+      toast.success(response.message || "Logged in successfully");
     },
     onError: (error) => {
       toast.error(getApiErrorMessage(error, "Failed to login"));

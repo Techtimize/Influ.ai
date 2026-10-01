@@ -1,4 +1,5 @@
 import type { DashboardData } from "@/types/dashboard";
+import { PAGE_ROUTES } from "@/constant/page-routes";
 
 // Temporary data. Delete this file once the API is connected.
 // Image paths point to files inside /public/assets.
@@ -23,7 +24,7 @@ export const MOCK_DASHBOARD: DashboardData = {
     ],
   },
   docs: [
-    { id: "company", title: "Company Information", subtitle: "Detail our ai agents collected", icon: "file", href: "/company-overview" },
+    { id: "company", title: "Company Information", subtitle: "Detail our ai agents collected", icon: "file", href: PAGE_ROUTES.COMPANY_OVERVIEW },
     { id: "marketing", title: "Marketing Position", subtitle: "Strong technical expertise, broad focus.", icon: "megaphone", href: "#" },
     { id: "pain", title: "Pain Points", subtitle: "Growth and development gaps.", icon: "layers", href: "#" },
     { id: "competitors", title: "Competitors Analytics", subtitle: "Growth and development gaps.", icon: "chart", href: "#" },

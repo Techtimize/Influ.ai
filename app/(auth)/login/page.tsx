@@ -10,6 +10,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
@@ -19,6 +20,7 @@ import {
   LoginFormValidator,
 } from '@/validator/Auth/login-validator';
 import { Eye, EyeOff } from 'lucide-react';
+import { PAGE_ROUTES } from '@/constant/page-routes';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -31,12 +33,12 @@ export default function Login() {
   });
 
   const SignInMutation = LoginMutation();
+  const router = useRouter();
   const ref = useRef<HTMLFormElement>(null);
 
   const onSubmit = (data: LoginFormValidator) => {
-    SignInMutation.mutate({
-      email: data.email,
-      password: data.password,
+    SignInMutation.mutate(data, {
+      onSuccess: () => router.push(PAGE_ROUTES.ONBOARDING),
     });
   };
 
@@ -60,7 +62,7 @@ export default function Login() {
         <Card className="w-full max-w-md rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl shadow-2xl">
           <div className="p-10 space-y-8">
             {/* Logo */}
-            <Link href="/" className="flex justify-center">
+            <Link href={PAGE_ROUTES.HOME} className="flex justify-center">
               <img
                 src="/assets/Logo.svg"
                 alt="Fluenca.ai Logo"
@@ -137,7 +139,7 @@ export default function Login() {
                 {/* Forgot */}
                 <div className="flex justify-end">
                   <Link
-                    href="/forgot-password"
+                    href={PAGE_ROUTES.FORGOT_PASSWORD}
                     className="text-xs text-slate-400 hover:text-white transition"
                   >
                     Forgot password?
@@ -163,7 +165,7 @@ export default function Login() {
             <p className="text-center text-sm text-slate-400">
               Don’t have an account?{' '}
               <Link
-                href="/signup"
+                href={PAGE_ROUTES.SIGNUP}
                 className="text-white font-medium hover:underline"
               >
                 Create account
